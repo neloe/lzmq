@@ -10,6 +10,7 @@
 #include "zpoller.h"
 #include <assert.h>
 #include "zsupport.h"
+#include "zglobal.h"
 
 #define LUAZMQ_VERSION_MAJOR 0
 #define LUAZMQ_VERSION_MINOR 3
@@ -38,6 +39,31 @@ LUAZMQ_EXPORT int luazmq_context (lua_State *L, void *ctx, unsigned char own) {
   if(!own){
     zctx->flags = LUAZMQ_FLAG_DONT_DESTROY;
   }
+
+  return 1;
+}
+
+LUAZMQ_EXPORT int luazmq_context_instance (lua_State *L){
+  zcontext *zctx;
+  void *ctx = luazmq_global_context();
+
+  if(!ctx) return luazmq_fail(L,NULL);
+
+  luazmq_rawgetp(L, LUA_REGISTRYINDEX, ctx);
+  if(!lua_isnil(L, -1)) return 1;
+  lua_pop(L, 1);
+
+  zctx = luazmq_newudata(L, zcontext, LUAZMQ_CONTEXT);
+  zctx->ctx = ctx;
+  zctx->autoclose_ref = LUA_NOREF;
+
+#if LZMQ_SOCKET_COUNT
+  zctx->socket_count = 0;
+#endif
+  zctx->flags = LUAZMQ_FLAG_DONT_DESTROY;
+
+  lua_pushvalue(L, -1);
+  luazmq_rawsetp(L, LUA_REGISTRYINDEX, ctx);
 
   return 1;
 }
@@ -428,6 +454,7 @@ static const struct luaL_Reg luazmqlib[]   = {
   { "error",          luazmq_error_create_    },
   { "strerror",       luazmq_error_tostring   },
   { "context",        luazmq_context_create   },
+  { "global_context", luazmq_context_instance },
   { "poller",         luazmq_poller_create    },
   { "init",           luazmq_context_init     },
   { "init_ctx",       luazmq_init_ctx         },

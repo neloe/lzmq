@@ -531,6 +531,15 @@ end
 
 end
 
+local _ENV = TEST_CASE'global_context'       if true then
+
+function test_equal()
+  local ctx = assert(is_zcontext(zmq.global_context()))
+  assert_equal(ctx, zmq.global_context())
+end
+
+end
+
 local _ENV = TEST_CASE'socket autoclose'     if true then
 
 local ctx, skt

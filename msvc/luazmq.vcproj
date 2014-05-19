@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="luazmq"
 	ProjectGUID="{C372E4D2-5680-4793-A0D9-6488413AC277}"
 	RootNamespace="luazmq"
@@ -198,6 +198,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\zglobal.c"
+				>
+			</File>
+			<File
 				RelativePath="..\src\zmsg.c"
 				>
 			</File>
@@ -233,6 +237,10 @@
 			</File>
 			<File
 				RelativePath="..\src\zerror.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zglobal.h"
 				>
 			</File>
 			<File
