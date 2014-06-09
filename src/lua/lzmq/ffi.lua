@@ -3,8 +3,8 @@ local LZMQ_VERSION = "0.3.7-dev"
 local lua_version_t
 local function lua_version()
   if not lua_version_t then 
-    local version = rawget(_G,"_VERSION")
-    local maj,min = version:match("^Lua (%d+)%.(%d+)$")
+    --local version = rawget(_G,"_VERSION")
+    local maj,min = _VERSION:match("^Lua (%d+)%.(%d+)$")
     if maj then                         lua_version_t = {tonumber(maj),tonumber(min)}
     elseif not math.mod then            lua_version_t = {5,2}
     elseif table.pack and not pack then lua_version_t = {5,2}
